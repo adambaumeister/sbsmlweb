@@ -11,3 +11,39 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.editorMain {
+  background-color: #fafafa;
+  height: 500px;
+  width: 500px;
+  position: relative;
+}
+
+textarea {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  height: 100%;
+  width: 100%;
+  resize: none;
+  padding: 0px;
+  color: transparent;
+  background: transparent;
+  caret-color: black;
+  border: 0px;
+}
+
+pre { 
+  position: relative;
+  margin: 0px;
+  border: 0px;
+  text-align: left;
+}
+
+.greenHighlight {
+  background-color: #BEE2BC;
+}
+
+.yellowHighlight {
+  background-color: #FFF7D7;
+}
