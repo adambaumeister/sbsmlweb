@@ -45,14 +45,13 @@ export class SBSLinter extends React.Component {
 
     render() {
         return (
-        <div className="row main">
+        <div className="row main justify-content-center">
             <div className="col p-0" style={{display: "contents"}}>
                 <form className="editorMainForm">
                     <TextEditor updateParser={this.setParser} setParserError={this.setParserError}/>
                 </form>
-            </div>
-            <div className="col main-col border">
                 <ParsedDisplay parser={this.state.parser} parserError={this.state.parserError}/>
+
             </div>
         </div>
         );
@@ -169,7 +168,7 @@ class ParsedDisplay extends React.Component {
     render() {
         if (this.props.parserError != null) {
             return (
-                <div className="parsedDisplay pt-3 w-100">
+                <div className="parsedDisplay p-3 float-left">
                     <ErrorDisplay parserError={this.props.parserError}/>
                 </div>
             )            
@@ -183,7 +182,7 @@ class ParsedDisplay extends React.Component {
             })
         }
         return (
-            <div className="parsedDisplay pt-3 w-100">
+            <div className="parsedDisplay p-3 float-left">
                 {processNodeDisplays}
             </div>
         )
@@ -223,7 +222,7 @@ class DescriptionDisplay extends React.Component {
     render() {
         if (this.props.descriptionNode !== undefined) {
             return (
-                <small className="text-muted">{this.props.descriptionNode.text}</small>
+                <small>{this.props.descriptionNode.text}</small>
             )
         }
 

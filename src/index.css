@@ -14,7 +14,7 @@ code {
 
 .editorMain {
   background-color: #fafafa;
-  height: 900px;
+  height: 500px;
   width: 900px;
   position: relative;
 }
@@ -35,7 +35,7 @@ code {
   width: 100%;
 
   resize: none !important;
-  padding: 0px !important;
+  padding: 5px !important;
   color: transparent !important;
   background: transparent !important;
   caret-color: black !important;
@@ -53,6 +53,8 @@ code {
   border: 0px !important;
   height: 100%;
   width: 100%;
+  padding: 5px;
+
 
   text-align: left;
   -webkit-user-select: none; /* Safari */        
@@ -73,9 +75,6 @@ code {
   background-color: #FFF7D7;
 }
 
-.main {
-  background-color:white;
-}
 
 .main-col {
   color: black;
