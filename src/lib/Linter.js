@@ -74,6 +74,7 @@ class TextEditor extends React.Component {
       this.state = {
           value: EXAMPLE_SBS,
           scrollTopValue: "",
+          parserError: null
       };
       this.myRef = React.createRef();
     }
@@ -90,6 +91,7 @@ class TextEditor extends React.Component {
             this.props.setParserError(err)
             this.setState({
                 value: event.target.value,
+                parserError: err,
             });
             return;
         }
@@ -97,6 +99,7 @@ class TextEditor extends React.Component {
         this.props.updateParser(newParser);
         this.setState({
             value: event.target.value,
+            parserError: null,
         });
     }
     handleScroll() {
@@ -109,7 +112,7 @@ class TextEditor extends React.Component {
     render() {
         return (
         <div className="editorMain">
-            <TextDisplay text={this.state.value} scrollTop={this.state.scrollTopValue} scrollLeft={this.state.scrollLeftValue}/>
+            <TextDisplay text={this.state.value} scrollTop={this.state.scrollTopValue} scrollLeft={this.state.scrollLeftValue} parserError={this.state.parserError}/>
             <textarea onScroll={this.handleScroll} ref={this.myRef} className="invis text-nowrap" value={this.state.value} onChange={this.handleChange}/>
         </div>
         );
@@ -124,8 +127,6 @@ class TextDisplay extends React.Component {
 
     componentDidUpdate() {
         if (this.myRef.current) {
-            console.log("Setting values " + this.props.scrollTop + this.props.scrollLeft)
-
             this.myRef.current.scrollTop = this.props.scrollTop;
             this.myRef.current.scrollLeft = this.props.scrollLeft;
         }
@@ -134,24 +135,36 @@ class TextDisplay extends React.Component {
     parse(text) {
         var lines = text.split(/\r?\n/);
         var fmtLines = [];
+
         lines.forEach((line, index) => {
             var nodeType = SBSMLParser.parseLine(line);
-            switch(nodeType) {
-                case ProcessNode:
-                    fmtLines.push(<ProcessLine text={line} key={index}/>)
-                    break;
-                case StepNode:
-                    fmtLines.push(<StepLine text={line} key={index}/>)
-                    break;
-                case SubStepNode:
-                    fmtLines.push(<SubStepLine text={line} key={index}/>)
-                    break;
-                case DescriptionNode:
-                    fmtLines.push(<DescriptionLine text={line} key={index}/>)
-                    break;
-                default:
-                    fmtLines.push(line + "\n")
-                    break;
+            var skipNode = false;
+
+            if (this.props.parserError !== null) {
+                if (this.props.parserError.line === index) {
+                    fmtLines.push(<ErrorLine text={line}/>);
+                    skipNode = true;
+                }
+            }
+
+            if (!skipNode) {
+                switch(nodeType) {
+                    case ProcessNode:
+                        fmtLines.push(<ProcessLine text={line} key={index}/>)
+                        break;
+                    case StepNode:
+                        fmtLines.push(<StepLine text={line} key={index}/>)
+                        break;
+                    case SubStepNode:
+                        fmtLines.push(<SubStepLine text={line} key={index}/>)
+                        break;
+                    case DescriptionNode:
+                        fmtLines.push(<DescriptionLine text={line} key={index}/>)
+                        break;
+                    default:
+                        fmtLines.push(line + "\n")
+                        break;
+                }
             }
         })
         return fmtLines;
@@ -185,6 +198,14 @@ class SubStepLine extends React.Component {
     render() {
         return (
             <div className="lightYellowHighlight">{this.props.text}</div>
+        )
+    }
+}
+
+class ErrorLine extends React.Component {
+    render() {
+        return (
+            <div className="redHighlight">{this.props.text}</div>
         )
     }
 }
@@ -267,7 +288,7 @@ class ErrorDisplay extends React.Component {
     render() {
         console.log(this.props.parserError.message);
         return (
-            <h1 className="text-warning">Error Failed to parse {this.props.parserError.message}</h1>
+            <h1 className="text-danger">Error On line #{this.props.parserError.line} Failed to parse {this.props.parserError.message}</h1>
         )
 
     }    

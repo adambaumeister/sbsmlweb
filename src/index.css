@@ -88,6 +88,12 @@ code {
   background-color: #d1e6fd;
 }
 
+.redHighlight {
+  background-color: #fdd1d1;
+  text-decoration: underline dotted red;
+
+}
+
 
 
 .main-col {
