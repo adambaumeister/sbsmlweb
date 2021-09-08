@@ -19,6 +19,11 @@ code {
   position: relative;
 }
 
+.processNode {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
 .editorMainForm {
   float: left;
 }
@@ -75,6 +80,15 @@ code {
   background-color: #FFF7D7;
 }
 
+.lightYellowHighlight {
+  background-color: #fcf9f0;
+}
+
+.blueHighlight {
+  background-color: #d1e6fd;
+}
+
+
 
 .main-col {
   color: black;
@@ -88,7 +102,18 @@ code {
 
 .stepNode {
   text-align: left;
+  border-left: 5px solid lightyellow;
+  margin: 0px;
+  padding-left: 5px;
 }
+
+.descriptionNode {
+  text-align: left;
+  border-left: 5px solid lightblue;
+  margin: 0px;
+  padding-left: 10px;
+}
+
 
 .left-align {
   text-align: left;

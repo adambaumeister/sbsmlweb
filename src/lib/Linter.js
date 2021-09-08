@@ -1,5 +1,5 @@
 import React from 'react';
-import {ProcessNode, SBSMLParser, StepNode} from 'sbsmljs/lib/parser';
+import {ProcessNode, SBSMLParser, StepNode, DescriptionNode, SubStepNode} from 'sbsmljs/lib/parser';
 
 const EXAMPLE_SBS = `--- Bake a cake ---
 1. Butter > Melt some butter >> melted butter
@@ -15,14 +15,16 @@ then: Make the icing
 --- Make the icing ---
 1. Melt some more butter
 2. Mix the butter with the icing and milk
-3. Spread the icing on the cake!
-`
+3. Spread the icing on the cake!`
 
 export class SBSLinter extends React.Component {
     constructor(props) {
       super(props);
       this.setParser = this.setParser.bind(this);
       this.setParserError = this.setParserError.bind(this);
+      this.clearParserError = this.clearParserError.bind(this);
+
+
 
       this.state = {
           parser: null,
@@ -37,10 +39,15 @@ export class SBSLinter extends React.Component {
     }
 
     setParserError(err) {
-        console.log(err);
         this.setState({
             parserError: err
         })
+    }
+
+    clearParserError() {
+        this.setState({
+            parserError: null
+        })        
     }
 
     render() {
@@ -48,7 +55,7 @@ export class SBSLinter extends React.Component {
         <div className="row main justify-content-center">
             <div className="col p-0" style={{display: "contents"}}>
                 <form className="editorMainForm">
-                    <TextEditor updateParser={this.setParser} setParserError={this.setParserError}/>
+                    <TextEditor updateParser={this.setParser} setParserError={this.setParserError} clearParserError={this.clearParserError}/>
                 </form>
                 <ParsedDisplay parser={this.state.parser} parserError={this.state.parserError}/>
 
@@ -79,10 +86,14 @@ class TextEditor extends React.Component {
         try {
             var newParser = SBSMLParser.parse(event.target.value);
         }
-        catch(err) {
+        catch(err) {          
             this.props.setParserError(err)
+            this.setState({
+                value: event.target.value,
+            });
             return;
         }
+        this.props.clearParserError();
         this.props.updateParser(newParser);
         this.setState({
             value: event.target.value,
@@ -132,6 +143,12 @@ class TextDisplay extends React.Component {
                 case StepNode:
                     fmtLines.push(<StepLine text={line} key={index}/>)
                     break;
+                case SubStepNode:
+                    fmtLines.push(<SubStepLine text={line} key={index}/>)
+                    break;
+                case DescriptionNode:
+                    fmtLines.push(<DescriptionLine text={line} key={index}/>)
+                    break;
                 default:
                     fmtLines.push(line + "\n")
                     break;
@@ -160,6 +177,22 @@ class StepLine extends React.Component {
     render() {
         return (
             <div className="yellowHighlight">{this.props.text}</div>
+        )
+    }
+}
+
+class SubStepLine extends React.Component {
+    render() {
+        return (
+            <div className="lightYellowHighlight">{this.props.text}</div>
+        )
+    }
+}
+
+class DescriptionLine extends React.Component {
+    render() {
+        return (
+            <div className="blueHighlight">{this.props.text}</div>
         )
     }
 }
@@ -197,7 +230,7 @@ class ProcessNodeDisplay extends React.Component {
         })
         return (
             <div className="left-align">
-                <h2 className="rounded p-2 bg-light">{this.props.node.nodeName}</h2>
+                <h2 className="rounded p-2 processNode bg-light">{this.props.node.nodeName}</h2>
                 {stepNodes}
             </div>
         )
@@ -220,20 +253,21 @@ class StepNodeDisplay extends React.Component {
 
 class DescriptionDisplay extends React.Component {
     render() {
-        if (this.props.descriptionNode !== undefined) {
+        if (this.props.descriptionNode.text !== null) {
             return (
-                <small>{this.props.descriptionNode.text}</small>
+                <h6 className="descriptionNode">{this.props.descriptionNode.text}</h6>
             )
         }
 
-        return;
+        return null;
     }
 }
 
 class ErrorDisplay extends React.Component {
     render() {
+        console.log(this.props.parserError.message);
         return (
-            <h1 className="text-warning">Failed to parse {this.props.parserError.message}</h1>
+            <h1 className="text-warning">Error Failed to parse {this.props.parserError.message}</h1>
         )
 
     }    
