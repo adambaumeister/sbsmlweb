@@ -288,7 +288,7 @@ class ErrorDisplay extends React.Component {
     render() {
         console.log(this.props.parserError.message);
         return (
-            <h1 className="text-danger">Error On line #{this.props.parserError.line} Failed to parse {this.props.parserError.message}</h1>
+            <h5 className="text-danger">Line #{this.props.parserError.line}: {this.props.parserError.message}</h5>
         )
 
     }    
