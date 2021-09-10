@@ -17,6 +17,7 @@ function Title() {
     <div className="title row align-items-center justify-content-center">
       <div className="row">
         <div className="col">
+          <img src={logo} width="100px" height="100px"/>
           <h1 className="display-1">Step-By-Step Markup Language</h1>
           <h6>A simple markup language for describing technical or business processes.</h6>
         </div>
