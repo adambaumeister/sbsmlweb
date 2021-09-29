@@ -73,6 +73,9 @@ code {
   line-height: 20pt !important;
 }
 
+.yamlPre {
+  overflow: scroll;
+}
 .greenHighlight {
   background-color: #BEE2BC;
 }

@@ -1,5 +1,9 @@
 import React from 'react';
 import {ProcessNode, SBSMLParser, StepNode, DescriptionNode, SubStepNode} from 'sbsmljs/lib/parser';
+import {Playbook} from 'sbsmljs/lib/playbook';
+
+const TEXT_DISPLAY_TYPE = "text";
+const YAML_DISPLAY_TYPE = "xsoaryaml"
 
 const EXAMPLE_SBS = `--- Bake a cake ---
 1. Butter > Melt some butter >> melted butter
@@ -23,12 +27,12 @@ export class SBSLinter extends React.Component {
       this.setParser = this.setParser.bind(this);
       this.setParserError = this.setParserError.bind(this);
       this.clearParserError = this.clearParserError.bind(this);
-
-
+      this.toggleDisplayType = this.toggleDisplayType.bind(this);
 
       this.state = {
           parser: null,
-          parserError: null
+          parserError: null,
+          displayType: TEXT_DISPLAY_TYPE
       };
     }
   
@@ -50,14 +54,35 @@ export class SBSLinter extends React.Component {
         })        
     }
 
+    toggleDisplayType() {
+        if (this.state.displayType === TEXT_DISPLAY_TYPE) {
+            this.setState({
+                displayType: YAML_DISPLAY_TYPE
+            })
+        } else {
+            this.setState({
+                displayType: TEXT_DISPLAY_TYPE
+            })
+        }
+
+    }
+
     render() {
+        let display = null;
+        if (this.state.displayType === TEXT_DISPLAY_TYPE) {
+            display = <ParsedDisplay toggleDisplayType={this.toggleDisplayType} parser={this.state.parser} parserError={this.state.parserError}/>
+        }
+        if (this.state.displayType === YAML_DISPLAY_TYPE) {
+            display = <YamlDisplay toggleDisplayType={this.toggleDisplayType} parser={this.state.parser} parserError={this.state.parserError}/>
+        }
+
         return (
         <div className="row main justify-content-center">
             <div className="col p-0" style={{display: "contents"}}>
                 <form className="editorMainForm">
                     <TextEditor updateParser={this.setParser} setParserError={this.setParserError} clearParserError={this.clearParserError}/>
                 </form>
-                <ParsedDisplay parser={this.state.parser} parserError={this.state.parserError}/>
+                {display}
 
             </div>
         </div>
@@ -218,6 +243,37 @@ class DescriptionLine extends React.Component {
     }
 }
 
+class YamlButton extends React.Component {
+    render() {
+        return (
+            <button type="button" onClick={this.props.toggleDisplayType} className="btn btn-secondary">YAML</button>
+        )
+    }
+}
+
+
+class ButtonGroup extends React.Component {
+    render() {
+        return (
+            <div className="btn-group pt-3" role="group" aria-label="Basic example">
+                <YamlButton toggleDisplayType={this.props.toggleDisplayType}/>
+            </div>
+        )
+    }
+}
+
+class YamlDisplay extends React.Component {
+    render() {
+        let renderedPlaybook = Playbook.render(this.props.parser);
+        let yamlText = renderedPlaybook.toYaml();
+        return (
+            <div><pre>
+                {yamlText}
+            </pre></div>
+        )
+    }
+}
+
 class ParsedDisplay extends React.Component {
     render() {
         if (this.props.parserError != null) {
@@ -236,8 +292,9 @@ class ParsedDisplay extends React.Component {
             })
         }
         return (
-            <div className="parsedDisplay p-3 float-left">
+            <div className="parsedDisplay px-3 float-left">
                 {processNodeDisplays}
+                <ButtonGroup toggleDisplayType={this.props.toggleDisplayType}/>
             </div>
         )
     }
