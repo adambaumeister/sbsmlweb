@@ -2,8 +2,8 @@ import React from 'react';
 import {ProcessNode, SBSMLParser, StepNode, DescriptionNode, SubStepNode} from 'sbsmljs/lib/parser';
 import {Playbook} from 'sbsmljs/lib/playbook';
 
-const TEXT_DISPLAY_TYPE = "text";
-const YAML_DISPLAY_TYPE = "xsoaryaml"
+const TEXT_DISPLAY_TYPE = "TEXT";
+const YAML_DISPLAY_TYPE = "XSOAR YAML"
 
 const EXAMPLE_SBS = `--- Bake a cake ---
 1. Butter > Melt some butter >> melted butter
@@ -23,19 +23,19 @@ then: Make the icing
 
 export class SBSLinter extends React.Component {
     constructor(props) {
-      super(props);
-      this.setParser = this.setParser.bind(this);
-      this.setParserError = this.setParserError.bind(this);
-      this.clearParserError = this.clearParserError.bind(this);
-      this.toggleDisplayType = this.toggleDisplayType.bind(this);
+        super(props);
+        this.setParser = this.setParser.bind(this);
+        this.setParserError = this.setParserError.bind(this);
+        this.clearParserError = this.clearParserError.bind(this);
+        this.toggleDisplayType = this.toggleDisplayType.bind(this);
 
-      this.state = {
-          parser: null,
-          parserError: null,
-          displayType: TEXT_DISPLAY_TYPE
-      };
+        this.state = {
+            parser: null,
+            parserError: null,
+            displayType: TEXT_DISPLAY_TYPE
+        };
     }
-  
+
     setParser(newParser) {
         this.setState({
             parser: newParser
@@ -51,7 +51,7 @@ export class SBSLinter extends React.Component {
     clearParserError() {
         this.setState({
             parserError: null
-        })        
+        })
     }
 
     toggleDisplayType() {
@@ -70,49 +70,51 @@ export class SBSLinter extends React.Component {
     render() {
         let display = null;
         if (this.state.displayType === TEXT_DISPLAY_TYPE) {
-            display = <ParsedDisplay toggleDisplayType={this.toggleDisplayType} parser={this.state.parser} parserError={this.state.parserError}/>
+            display = <ParsedDisplay toggleDisplayType={this.toggleDisplayType} parser={this.state.parser}
+                                     parserError={this.state.parserError} displayType={this.state.displayType}/>
         }
         if (this.state.displayType === YAML_DISPLAY_TYPE) {
-            display = <YamlDisplay toggleDisplayType={this.toggleDisplayType} parser={this.state.parser} parserError={this.state.parserError}/>
+            display = <YamlDisplay toggleDisplayType={this.toggleDisplayType} parser={this.state.parser}
+                                   parserError={this.state.parserError} displayType={this.state.displayType}/>
         }
 
         return (
-        <div className="row main justify-content-center">
-            <div className="col p-0" style={{display: "contents"}}>
-                <form className="editorMainForm">
-                    <TextEditor updateParser={this.setParser} setParserError={this.setParserError} clearParserError={this.clearParserError}/>
-                </form>
-                {display}
-
+            <div className="row main justify-content-center">
+                <div className="col p-0" style={{display: "contents"}}>
+                    <form className="editorMainForm">
+                        <TextEditor updateParser={this.setParser} setParserError={this.setParserError}
+                                    clearParserError={this.clearParserError}/>
+                    </form>
+                    {display}
+                </div>
             </div>
-        </div>
         );
     }
 }
 
 class TextEditor extends React.Component {
     constructor(props) {
-      super(props);
-      this.handleChange = this.handleChange.bind(this);
-      this.handleScroll = this.handleScroll.bind(this);
+        super(props);
+        this.handleChange = this.handleChange.bind(this);
+        this.handleScroll = this.handleScroll.bind(this);
 
-      this.state = {
-          value: EXAMPLE_SBS,
-          scrollTopValue: "",
-          parserError: null
-      };
-      this.myRef = React.createRef();
+        this.state = {
+            value: EXAMPLE_SBS,
+            scrollTopValue: "",
+            parserError: null
+        };
+        this.myRef = React.createRef();
     }
 
     componentDidMount() {
         var newParser = SBSMLParser.parse(this.state.value);
         this.props.updateParser(newParser);
     }
+
     handleChange(event) {
         try {
             var newParser = SBSMLParser.parse(event.target.value);
-        }
-        catch(err) {          
+        } catch (err) {
             this.props.setParserError(err)
             this.setState({
                 value: event.target.value,
@@ -127,6 +129,7 @@ class TextEditor extends React.Component {
             parserError: null,
         });
     }
+
     handleScroll() {
         this.setState({
             scrollTopValue: this.myRef.current.scrollTop,
@@ -134,12 +137,15 @@ class TextEditor extends React.Component {
 
         })
     }
+
     render() {
         return (
-        <div className="editorMain">
-            <TextDisplay text={this.state.value} scrollTop={this.state.scrollTopValue} scrollLeft={this.state.scrollLeftValue} parserError={this.state.parserError}/>
-            <textarea onScroll={this.handleScroll} ref={this.myRef} className="invis text-nowrap" value={this.state.value} onChange={this.handleChange}/>
-        </div>
+            <div className="editorMain">
+                <TextDisplay text={this.state.value} scrollTop={this.state.scrollTopValue}
+                             scrollLeft={this.state.scrollLeftValue} parserError={this.state.parserError}/>
+                <textarea onScroll={this.handleScroll} ref={this.myRef} className="invis text-nowrap"
+                          value={this.state.value} onChange={this.handleChange}/>
+            </div>
         );
     }
 }
@@ -173,7 +179,7 @@ class TextDisplay extends React.Component {
             }
 
             if (!skipNode) {
-                switch(nodeType) {
+                switch (nodeType) {
                     case ProcessNode:
                         fmtLines.push(<ProcessLine text={line} key={index}/>)
                         break;
@@ -198,7 +204,8 @@ class TextDisplay extends React.Component {
     render() {
         var fmtText = this.parse(this.props.text);
         return (
-            <pre ref={this.myRef} scrollTop={this.props.scrollTop} scrollLeft={this.props.scrollLeft} className="editorPre">{fmtText}</pre>
+            <pre ref={this.myRef} scrollTop={this.props.scrollTop} scrollLeft={this.props.scrollLeft}
+                 className="editorPre">{fmtText}</pre>
         );
     }
 }
@@ -243,10 +250,15 @@ class DescriptionLine extends React.Component {
     }
 }
 
-class YamlButton extends React.Component {
+class ChangeDisplayButton extends React.Component {
     render() {
+        // Swap them around
+        let t = TEXT_DISPLAY_TYPE;
+        if (this.props.displayType === TEXT_DISPLAY_TYPE) {
+            t = YAML_DISPLAY_TYPE;
+        }
         return (
-            <button type="button" onClick={this.props.toggleDisplayType} className="btn btn-secondary">YAML</button>
+            <button type="button" onClick={this.props.toggleDisplayType} className="btn btn-secondary">{t}</button>
         )
     }
 }
@@ -255,8 +267,8 @@ class YamlButton extends React.Component {
 class ButtonGroup extends React.Component {
     render() {
         return (
-            <div className="btn-group pt-3" role="group" aria-label="Basic example">
-                <YamlButton toggleDisplayType={this.props.toggleDisplayType}/>
+            <div className="btn-group" role="group" aria-label="Basic example">
+                <ChangeDisplayButton toggleDisplayType={this.props.toggleDisplayType} displayType={this.props.displayType}/>
             </div>
         )
     }
@@ -267,9 +279,14 @@ class YamlDisplay extends React.Component {
         let renderedPlaybook = Playbook.render(this.props.parser);
         let yamlText = renderedPlaybook.toYaml();
         return (
-            <div><pre>
+            <div>
+            <pre className="yamlPre p-3">
+                <div style={{textAlign: "center"}}>
+                    <ButtonGroup toggleDisplayType={this.props.toggleDisplayType} displayType={this.props.displayType}/>
+                </div>
                 {yamlText}
-            </pre></div>
+            </pre>
+            </div>
         )
     }
 }
@@ -281,10 +298,10 @@ class ParsedDisplay extends React.Component {
                 <div className="parsedDisplay p-3 float-left">
                     <ErrorDisplay parserError={this.props.parserError}/>
                 </div>
-            )            
+            )
         }
 
-        var parser = this.props.parser; 
+        var parser = this.props.parser;
         var processNodeDisplays = [];
         if (parser !== null) {
             parser.processNodes.forEach((pnode, i) => {
@@ -292,9 +309,11 @@ class ParsedDisplay extends React.Component {
             })
         }
         return (
-            <div className="parsedDisplay px-3 float-left">
+            <div className="parsedDisplay p-3 float-left">
+                <div style={{textAlign: "center"}}>
+                    <ButtonGroup toggleDisplayType={this.props.toggleDisplayType} displayType={this.props.displayType}/>
+                </div>
                 {processNodeDisplays}
-                <ButtonGroup toggleDisplayType={this.props.toggleDisplayType}/>
             </div>
         )
     }
@@ -312,7 +331,7 @@ class ProcessNodeDisplay extends React.Component {
                 {stepNodes}
             </div>
         )
-    }   
+    }
 }
 
 class StepNodeDisplay extends React.Component {
@@ -320,7 +339,7 @@ class StepNodeDisplay extends React.Component {
         return (
             <div>
                 <h5 className="stepNode">{this.props.node.nodeName}
-                <br/>
+                    <br/>
                 </h5>
                 <DescriptionDisplay descriptionNode={this.props.node.descriptionNode}/>
             </div>
@@ -348,5 +367,5 @@ class ErrorDisplay extends React.Component {
             <h5 className="text-danger">Line #{this.props.parserError.line}: {this.props.parserError.message}</h5>
         )
 
-    }    
+    }
 }
