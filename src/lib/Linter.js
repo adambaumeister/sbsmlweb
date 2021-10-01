@@ -1,7 +1,7 @@
 import React from 'react';
 import {ProcessNode, SBSMLParser, StepNode, DescriptionNode, SubStepNode, TitleNode, Conditional, ThenNode} from 'sbsmljs/lib/parser';
 import {Playbook} from 'sbsmljs/lib/playbook';
-
+import xsoar from './../xsoar.png'
 const TEXT_DISPLAY_TYPE = "TEXT";
 const YAML_DISPLAY_TYPE = "XSOAR YAML"
 
@@ -27,7 +27,7 @@ then: Serve it up
 --- Sprinkles ---
 1. Add some sprinkles
 
---- Serve it up ---
+--- Serve it up ---2
 1. Move the cake to a plate
 `
 
@@ -289,11 +289,14 @@ class ChangeDisplayButton extends React.Component {
     render() {
         // Swap them around
         let t = TEXT_DISPLAY_TYPE;
+        let buttonText = t;
+
         if (this.props.displayType === TEXT_DISPLAY_TYPE) {
             t = YAML_DISPLAY_TYPE;
+            buttonText = <span><img src={xsoar} height="30px" alt="xsoar logo"/> YAML</span>
         }
         return (
-            <button type="button" onClick={this.props.toggleDisplayType} className="btn btn-secondary">{t}</button>
+            <button type="button" onClick={this.props.toggleDisplayType} className="btn btn-secondary">{buttonText}</button>
         )
     }
 }
