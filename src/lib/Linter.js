@@ -223,7 +223,7 @@ class TextDisplay extends React.Component {
     render() {
         var fmtText = this.parse(this.props.text);
         return (
-            <pre ref={this.myRef} scrollTop={this.props.scrollTop} scrollLeft={this.props.scrollLeft}
+            <pre ref={this.myRef}
                  className="editorPre">{fmtText}</pre>
         );
     }

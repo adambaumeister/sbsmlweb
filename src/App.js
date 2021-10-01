@@ -24,7 +24,7 @@ function Title() {
       </div>
       <div className="row">
         <div className="col">
-          <a class="btn btn-light" href="https://github.com/adambaumeister/sbsml/blob/main/spec/spec.md" role="button">Read the Spec             <GithubLogo/> </a>
+          <a className="btn btn-light" href="https://github.com/adambaumeister/sbsml/blob/main/spec/spec.md" role="button">Read the Spec             <GithubLogo/> </a>
         </div>
       </div>
       <div className="row">
