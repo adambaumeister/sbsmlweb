@@ -1,26 +1,26 @@
 {
   "files": {
-    "main.css": "/sbsmlweb/static/css/main.fbfa2193.chunk.css",
-    "main.js": "/sbsmlweb/static/js/main.7abd7cab.chunk.js",
-    "main.js.map": "/sbsmlweb/static/js/main.7abd7cab.chunk.js.map",
-    "runtime-main.js": "/sbsmlweb/static/js/runtime-main.188b632f.js",
-    "runtime-main.js.map": "/sbsmlweb/static/js/runtime-main.188b632f.js.map",
+    "main.css": "/sbsmlweb/static/css/main.37d27051.chunk.css",
+    "main.js": "/sbsmlweb/static/js/main.4adb511d.chunk.js",
+    "main.js.map": "/sbsmlweb/static/js/main.4adb511d.chunk.js.map",
+    "runtime-main.js": "/sbsmlweb/static/js/runtime-main.4de69710.js",
+    "runtime-main.js.map": "/sbsmlweb/static/js/runtime-main.4de69710.js.map",
     "static/css/2.c490997a.chunk.css": "/sbsmlweb/static/css/2.c490997a.chunk.css",
-    "static/js/2.fa0639c2.chunk.js": "/sbsmlweb/static/js/2.fa0639c2.chunk.js",
-    "static/js/2.fa0639c2.chunk.js.map": "/sbsmlweb/static/js/2.fa0639c2.chunk.js.map",
-    "static/js/3.d9cc2855.chunk.js": "/sbsmlweb/static/js/3.d9cc2855.chunk.js",
-    "static/js/3.d9cc2855.chunk.js.map": "/sbsmlweb/static/js/3.d9cc2855.chunk.js.map",
+    "static/js/2.6fb9ad41.chunk.js": "/sbsmlweb/static/js/2.6fb9ad41.chunk.js",
+    "static/js/2.6fb9ad41.chunk.js.map": "/sbsmlweb/static/js/2.6fb9ad41.chunk.js.map",
+    "static/js/3.1de34ee4.chunk.js": "/sbsmlweb/static/js/3.1de34ee4.chunk.js",
+    "static/js/3.1de34ee4.chunk.js.map": "/sbsmlweb/static/js/3.1de34ee4.chunk.js.map",
     "index.html": "/sbsmlweb/index.html",
     "static/css/2.c490997a.chunk.css.map": "/sbsmlweb/static/css/2.c490997a.chunk.css.map",
-    "static/css/main.fbfa2193.chunk.css.map": "/sbsmlweb/static/css/main.fbfa2193.chunk.css.map",
-    "static/js/2.fa0639c2.chunk.js.LICENSE.txt": "/sbsmlweb/static/js/2.fa0639c2.chunk.js.LICENSE.txt",
+    "static/css/main.37d27051.chunk.css.map": "/sbsmlweb/static/css/main.37d27051.chunk.css.map",
+    "static/js/2.6fb9ad41.chunk.js.LICENSE.txt": "/sbsmlweb/static/js/2.6fb9ad41.chunk.js.LICENSE.txt",
     "static/media/logo.7b910d0d.svg": "/sbsmlweb/static/media/logo.7b910d0d.svg"
   },
   "entrypoints": [
-    "static/js/runtime-main.188b632f.js",
+    "static/js/runtime-main.4de69710.js",
     "static/css/2.c490997a.chunk.css",
-    "static/js/2.fa0639c2.chunk.js",
-    "static/css/main.fbfa2193.chunk.css",
-    "static/js/main.7abd7cab.chunk.js"
+    "static/js/2.6fb9ad41.chunk.js",
+    "static/css/main.37d27051.chunk.css",
+    "static/js/main.4adb511d.chunk.js"
   ]
 }
