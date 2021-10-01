@@ -1,11 +1,12 @@
 import React from 'react';
-import {ProcessNode, SBSMLParser, StepNode, DescriptionNode, SubStepNode} from 'sbsmljs/lib/parser';
+import {ProcessNode, SBSMLParser, StepNode, DescriptionNode, SubStepNode, TitleNode, Conditional, ThenNode} from 'sbsmljs/lib/parser';
 import {Playbook} from 'sbsmljs/lib/playbook';
 
 const TEXT_DISPLAY_TYPE = "TEXT";
 const YAML_DISPLAY_TYPE = "XSOAR YAML"
 
-const EXAMPLE_SBS = `--- Bake a cake ---
+const EXAMPLE_SBS = `- How to Make A Cake -
+--- Bake a cake ---
 1. Butter > Melt some butter >> melted butter
     1a. Put the cake in a small dish
     1b. Melt in the microwave
@@ -19,7 +20,16 @@ then: Make the icing
 --- Make the icing ---
 1. Melt some more butter
 2. Mix the butter with the icing and milk
-3. Spread the icing on the cake!`
+3. Spread the icing on the cake!
+IF: I like Sprinkles THEN: Sprinkles
+then: Serve it up
+
+--- Sprinkles ---
+1. Add some sprinkles
+
+--- Serve it up ---
+1. Move the cake to a plate
+`
 
 export class SBSLinter extends React.Component {
     constructor(props) {
@@ -183,11 +193,20 @@ class TextDisplay extends React.Component {
                     case ProcessNode:
                         fmtLines.push(<ProcessLine text={line} key={index}/>)
                         break;
+                    case TitleNode:
+                        fmtLines.push(<TitleLine text={line} key={index}/>)
+                        break;
                     case StepNode:
                         fmtLines.push(<StepLine text={line} key={index}/>)
                         break;
                     case SubStepNode:
                         fmtLines.push(<SubStepLine text={line} key={index}/>)
+                        break;
+                    case Conditional:
+                        fmtLines.push(<GenericNextLine text={line} key={index}/>)
+                        break;
+                    case ThenNode:
+                        fmtLines.push(<GenericNextLine text={line} key={index}/>)
                         break;
                     case DescriptionNode:
                         fmtLines.push(<DescriptionLine text={line} key={index}/>)
@@ -230,6 +249,22 @@ class SubStepLine extends React.Component {
     render() {
         return (
             <div className="lightYellowHighlight">{this.props.text}</div>
+        )
+    }
+}
+
+class TitleLine extends React.Component {
+    render() {
+        return (
+            <div className="greenHighlight">{this.props.text}</div>
+        )
+    }
+}
+
+class GenericNextLine extends React.Component {
+    render() {
+        return (
+            <div className="yellowHighlight">{this.props.text}</div>
         )
     }
 }
@@ -293,8 +328,14 @@ class YamlDisplay extends React.Component {
     }
 
     render() {
-        let renderedPlaybook = Playbook.render(this.props.parser);
-        let yamlText = renderedPlaybook.toYaml();
+        let yamlText = null;
+        try {
+            let renderedPlaybook = Playbook.render(this.props.parser);
+            yamlText = renderedPlaybook.toYaml();
+        } catch (err) {
+            yamlText = err.message;
+        }
+
         return (
             <div>
             <pre className="yamlPre p-3" onClick={() => this.copyToClipBoard(yamlText)}>
