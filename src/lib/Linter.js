@@ -275,16 +275,38 @@ class ButtonGroup extends React.Component {
 }
 
 class YamlDisplay extends React.Component {
+    constructor() {
+        super();
+        this.state = {
+            classes: "",
+            overrideText: null
+        };
+        this.copyToClipBoard = this.copyToClipBoard.bind(this);
+    }
+
+    copyToClipBoard(value) {
+        this.setState({
+            classes: "blueBorder",
+            overrideText: "Copied to clipboard!"
+        });
+        navigator.clipboard.writeText(value);
+    }
+
     render() {
         let renderedPlaybook = Playbook.render(this.props.parser);
         let yamlText = renderedPlaybook.toYaml();
         return (
             <div>
-            <pre className="yamlPre p-3">
+            <pre className="yamlPre p-3" onClick={() => this.copyToClipBoard(yamlText)}>
                 <div style={{textAlign: "center"}}>
                     <ButtonGroup toggleDisplayType={this.props.toggleDisplayType} displayType={this.props.displayType}/>
                 </div>
-                {yamlText}
+                <div style={{zIndex: 2, position: "absolute", textAlign:"right", width: "450px"}}>
+                    {this.state.overrideText}
+                </div>
+                <div className={this.state.classes}>
+                     {yamlText}
+                </div>
             </pre>
             </div>
         )

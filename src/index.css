@@ -81,6 +81,11 @@ code {
   background-color: white;
   width: 500px;
 }
+
+.blueBorder {
+  border: 2px solid cornflowerblue;
+}
+
 .greenHighlight {
   background-color: #BEE2BC;
 }
